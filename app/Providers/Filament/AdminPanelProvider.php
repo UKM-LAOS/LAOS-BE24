@@ -6,7 +6,12 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -20,6 +25,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -64,6 +70,34 @@ class AdminPanelProvider extends PanelProvider
                 FilamentLaravelLogPlugin::make(),
                 FilamentEnvEditorPlugin::make(),
                 FilamentShieldPlugin::make(),
-            ]);
+            ])
+            // custom top menu
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label(fn() => "Edit Profile")
+                    ->url(fn(): string => EditProfilePage::getUrl())
+                    ->icon('heroicon-m-user-circle')
+            ])
+            // custom sidebar menu
+            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
+                return $builder->groups([
+                    NavigationGroup::make()
+                        ->items([
+                            ...Dashboard::getNavigationItems(),
+                        ]),
+                    NavigationGroup::make('Settings')
+                        ->items([
+                            NavigationItem::make('Roles & Permissions')
+                                ->icon('heroicon-s-shield-check')
+                                ->url(fn() => route('filament.admin.resources.shield.roles.index')),
+                            NavigationItem::make('Environment Editor')
+                                ->icon('heroicon-s-cog')
+                                ->url(fn() => route('filament.admin.pages.env-editor')),
+                            NavigationItem::make('Logs')
+                                ->icon('heroicon-s-newspaper')
+                                ->url(fn() => route('filament.admin.pages.logs')),
+                        ]),
+                ]);
+            });
     }
 }
