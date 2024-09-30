@@ -25,6 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ArticleResource extends Resource
@@ -32,6 +33,11 @@ class ArticleResource extends Resource
     protected static ?string $model = Article::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->can('view_article') && Auth::user()->can('view_any_article');
+    }
 
     public static function form(Form $form): Form
     {
@@ -68,7 +74,7 @@ class ArticleResource extends Resource
                         ->required(),
                     SpatieMediaLibraryFileUpload::make('thumbnail')
                         ->label('Thumbnail')
-                        ->collection('thumbnail')
+                        ->collection('article-thumbnail')
                         ->required(),
                 ])
             ]);
@@ -86,7 +92,7 @@ class ArticleResource extends Resource
                 Tables\Columns\TextColumn::make('division.name')
                     ->label('Divisi'),
                 SpatieMediaLibraryImageColumn::make('thumbnail')
-                    ->collection('thumbnail')
+                    ->collection('article-thumbnail')
                     ->label('Thumbnail'),
                 ToggleColumn::make('is_unggulan')
                     ->label('Unggulan'),

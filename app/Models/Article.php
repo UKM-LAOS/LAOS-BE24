@@ -20,7 +20,7 @@ class Article extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('thumbnail')
+        $this->addMediaCollection('article-thumbnail')
             ->singleFile();
     }
 }
