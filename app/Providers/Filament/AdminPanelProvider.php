@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Resources\DivisionResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -86,7 +87,9 @@ class AdminPanelProvider extends PanelProvider
                             ...Dashboard::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Company Profile')
-                        ->items([]),
+                        ->items([
+                            ...DivisionResource::getNavigationItems(),
+                        ]),
                     NavigationGroup::make('Web Course')
                         ->items([]),
                     NavigationGroup::make('Settings')
