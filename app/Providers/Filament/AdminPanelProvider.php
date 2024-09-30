@@ -85,6 +85,10 @@ class AdminPanelProvider extends PanelProvider
                         ->items([
                             ...Dashboard::getNavigationItems(),
                         ]),
+                    NavigationGroup::make('Company Profile')
+                        ->items([]),
+                    NavigationGroup::make('Web Course')
+                        ->items([]),
                     NavigationGroup::make('Settings')
                         ->items([
                             NavigationItem::make('Roles & Permissions')
