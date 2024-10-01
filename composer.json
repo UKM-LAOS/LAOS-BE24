@@ -13,6 +13,7 @@
         "geo-sot/filament-env-editor": "^0.0.4",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.9",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "saade/filament-laravel-log": "^3.2",
         "spatie/laravel-medialibrary": "^11.9",
