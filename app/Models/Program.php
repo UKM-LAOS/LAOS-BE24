@@ -13,6 +13,10 @@ class Program extends Model implements HasMedia
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'program_schedules' => 'array',
+    ];
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('progam-thumbnail')

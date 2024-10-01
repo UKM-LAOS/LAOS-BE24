@@ -9,6 +9,8 @@ use App\Models\Program;
 use Dotswan\MapPicker\Fields\Map;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -106,7 +108,20 @@ class ProgramResource extends Resource
                         ->reorderable(),
                     TextInput::make('embedded_gform')
                         ->label('Google Form')
-                        ->placeholder('Masukkan link Google Form, contoh: https://docs.google.com/forms/d/e/1FAIpQLSd')
+                        ->placeholder('Masukkan link Google Form, contoh: https://docs.google.com/forms/d/e/1FAIpQLSd'),
+                    Repeater::make('program_schedules')
+                        ->schema([
+                            TextInput::make('schedule_title')
+                                ->label('Judul Jadwal')
+                                ->required()
+                                ->maxLength(255),
+                            DatePicker::make('start_date')
+                                ->label('Tanggal Mulai')
+                                ->required(),
+                            DatePicker::make('end_date')
+                                ->label('Tanggal Selesai')
+                                ->required(),
+                        ])
                 ])
             ]);
     }

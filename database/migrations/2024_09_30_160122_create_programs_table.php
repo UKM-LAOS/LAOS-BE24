@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('open_registration');
             $table->date('close_registration');
             $table->text('embedded_gform');
+            $table->json('program_schedules');
             $table->timestamps();
         });
     }
