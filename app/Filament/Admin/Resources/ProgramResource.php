@@ -101,10 +101,10 @@ class ProgramResource extends Resource
                     SpatieMediaLibraryFileUpload::make('thumbnail')
                         ->required()
                         ->collection('program-thumbnail'),
-                    SpatieMediaLibraryFileUpload::make('gallery')
-                        ->collection('program-gallery')
+                    SpatieMediaLibraryFileUpload::make('documentation')
+                        ->collection('program-documentation')
                         ->multiple()
-                        ->label('Galeri (Multiple)')
+                        ->label('Dokumentasi (Multiple & Nullable)')
                         ->reorderable(),
                     TextInput::make('embedded_gform')
                         ->label('Google Form')
@@ -141,7 +141,7 @@ class ProgramResource extends Resource
                 Tables\Columns\TextColumn::make('close_registration')
                     ->date()
                     ->sortable(),
-                SpatieMediaLibraryImageColumn::make('thumbnail')
+                SpatieMediaLibraryImageColumn::make('program-thumbnail')
                     ->collection('program-thumbnail')
                     ->label('Thumbnail'),
                 Tables\Columns\TextColumn::make('created_at')
