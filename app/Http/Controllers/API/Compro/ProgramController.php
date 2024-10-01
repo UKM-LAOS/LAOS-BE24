@@ -23,6 +23,9 @@ class ProgramController extends Controller
     public function show($slug)
     {
         $program = Program::with(['media', 'division'])->whereProgramSlug($slug)->first();
+        if (!$program) {
+            return ResponseFormatter::error('Data program tidak ditemukan', 404);
+        }
         $program->thumbnail = $program->getFirstMediaUrl('program-thumbnail');
         $program->documentation = $program->getMedia('program-documentation')->map(function ($media) {
             return $media->getFullUrl();
