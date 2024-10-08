@@ -83,11 +83,19 @@ class MentorResource extends Resource
                     ->label('Pekerjaan')
                     ->getStateUsing(fn(User $user) => json_decode($user->custom_fields, true)['occupation'] ?? "-")
                     ->searchable(),
+                TextColumn::make('total_course')
+                    ->label('Jumlah Course')
+                    ->getStateUsing(fn(Model $record) => $record->courses()->count())
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Action::make('Course')
+                    ->label('Course')
+                    ->color('info')
+                    ->icon('heroicon-o-academic-cap')
+                    ->url(fn(User $user) => route('filament.admin.resources.mentors.course', ['record' => $user->id])),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -111,6 +119,7 @@ class MentorResource extends Resource
             'index' => Pages\ListMentors::route('/'),
             'create' => Pages\CreateMentor::route('/create'),
             'edit' => Pages\EditMentor::route('/{record}/edit'),
+            'course' => Pages\MentorCoursePage::route('/{record}/course'),
         ];
     }
 }
