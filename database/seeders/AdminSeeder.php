@@ -13,14 +13,9 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@am.test',
-            'password' => bcrypt('password'),
-            'occupation' => 'Administrator',
+        $user = User::whereEmail('admin@laos.ilkom.unej.ac.id');
+        $user->update([
             'approved_mentor' => true,
         ]);
-
-        $admin->assignRole('super_admin');
     }
 }
