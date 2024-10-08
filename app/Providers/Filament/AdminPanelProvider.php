@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Admin\Resources\ArticleResource;
 use App\Filament\Admin\Resources\DivisionResource;
+use App\Filament\Admin\Resources\MentorResource;
 use App\Filament\Admin\Resources\ProgramResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -37,6 +38,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->sidebarCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
             ->login()
@@ -98,6 +100,10 @@ class AdminPanelProvider extends PanelProvider
                             ...DivisionResource::getNavigationItems(),
                             ...ArticleResource::getNavigationItems(),
                             ...ProgramResource::getNavigationItems(),
+                        ]),
+                    NavigationGroup::make('Course')
+                        ->items([
+                            ...MentorResource::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Web Course')
                         ->items([]),

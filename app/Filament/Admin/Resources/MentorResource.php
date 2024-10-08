@@ -7,12 +7,18 @@ use App\Filament\Admin\Resources\MentorResource\RelationManagers;
 use App\Models\Mentor;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -22,21 +28,35 @@ class MentorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return false;
-    }
+    protected static ?string $navigationLabel = 'Mentor';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Card::make()->schema([
+                    TextInput::make('name')
+                        ->label('Nama Mentor')
+                        ->required(),
+                    TextInput::make('email')
+                        ->label('Email')
+                        ->required()
+                        ->email()
+                        ->unique(ignoreRecord: true),
+                    TextInput::make('password')
+                        ->label('Password')
+                        ->password()
+                        ->dehydrateStateUsing(fn($state) => bcrypt($state))
+                        ->dehydrated(fn($state) => filled($state))
+                        ->required(fn(string $context): bool => $context === 'create'),
+                    Select::make('roles')
+                        ->relationship('roles', 'name')
+                        ->multiple()
+                        ->label('Roles')
+                        ->preload()
+                        ->searchable()
+                        ->required()
+                ])
             ]);
     }
 
@@ -53,12 +73,17 @@ class MentorResource extends Resource
                 TextColumn::make('email')
                     ->label('Email')
                     ->searchable(),
+                TextColumn::make('custom_fields.occupation')
+                    ->label('Pekerjaan')
+                    ->getStateUsing(fn(User $user) => json_decode($user->custom_fields, true)['occupation'] ?? "-")
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
