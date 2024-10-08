@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class MentorResource extends Resource
 {
@@ -29,6 +30,11 @@ class MentorResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Mentor';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->can('view_any_mentor') && Auth::user()->can('view_mentor');
+    }
 
     public static function form(Form $form): Form
     {
