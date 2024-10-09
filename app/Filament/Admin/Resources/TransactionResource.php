@@ -79,21 +79,10 @@ class TransactionResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(function (Model $record) {
-                        if ($record->transaction == null) {
-                            return 'success';
-                        } else {
-                            match ($record->transaction->status) {
-                                'Pending' => 'warning',
-                                'Success' => 'success',
-                                'Failed' => 'danger',
-                            };
-                        }
-                    })
-                    ->getStateUsing(function (Model $record) {
-                        if ($record->transaction == null) {
-                            return 'Success';
-                        }
+                    ->color(fn(Model $record) => match ($record->status) {
+                        'Pending' => 'warning',
+                        'Success' => 'success',
+                        'Failed' => 'danger',
                     })
                     ->searchable(),
             ])
