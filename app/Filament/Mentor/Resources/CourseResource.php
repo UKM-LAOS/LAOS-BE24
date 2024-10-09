@@ -186,6 +186,11 @@ class CourseResource extends Resource
                     ->color('warning')
                     ->icon('heroicon-o-cog-6-tooth')
                     ->url(fn(Course $course) => ListChapters::getUrl(['record' => $course->id])),
+                Action::make('Review')
+                    ->label('Review')
+                    ->color('success')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn(Course $course) => Pages\ListReviews::getUrl(['record' => $course->id])),
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
             ])
@@ -215,6 +220,7 @@ class CourseResource extends Resource
             'create' => Pages\CreateCourse::route('/create'),
             'edit' => Pages\EditCourse::route('/{record}/edit'),
             'chapter' => Pages\ListChapters::route('/{record}/chapter'),
+            'reviews' => Pages\ListReviews::route('/{record}/reviews'),
         ];
     }
 }

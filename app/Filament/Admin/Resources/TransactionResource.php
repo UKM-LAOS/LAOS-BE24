@@ -56,27 +56,27 @@ class TransactionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->query(MyCourse::with('course', 'user', 'transaction'))
+            ->query(Transaction::with('myCourse', 'myCourse.course', 'myCourse.user'))
             ->columns([
-                TextColumn::make('transaction.order_id')
+                TextColumn::make('order_id')
                     ->label('ID')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('course.title')
+                TextColumn::make('myCourse.course.title')
                     ->label('Course')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('user.name')
+                TextColumn::make('myCourse.user.name')
                     ->label('Pembeli')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('transaction.price')
+                TextColumn::make('price')
                     ->label('Harga')
                     ->weight(FontWeight::Bold)
                     ->money('IDR')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('transaction.status')
+                TextColumn::make('status')
                     ->label('Status')
                     ->badge()
                     ->color(function (Model $record) {
@@ -98,8 +98,12 @@ class TransactionResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                SelectFilter::make('transaction.status')
-                    ->relationship('transaction', 'status')
+                SelectFilter::make('status')
+                    ->options([
+                        'Pending' => 'Pending',
+                        'Success' => 'Success',
+                        'Failed' => 'Failed',
+                    ])
                     ->label('Status'),
             ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([

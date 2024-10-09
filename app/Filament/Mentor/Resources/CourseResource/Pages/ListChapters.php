@@ -21,9 +21,17 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Illuminate\Support\Facades\Auth;
 
 class ListChapters extends Page implements HasTable, HasForms
 {
+    public function __construct()
+    {
+        if (!Auth::user()->hasRole('mentor') || (Auth::user()->can('view_any_course') && Auth::user()->can('view_course'))) {
+            abort(403, 'Unauthorized');
+        }
+    }
+
     use InteractsWithTable, InteractsWithForms;
 
     public $courseId;
