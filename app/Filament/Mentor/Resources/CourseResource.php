@@ -2,10 +2,8 @@
 
 namespace App\Filament\Mentor\Resources;
 
-use App\Filament\Mentor\Resources\ChapterResource\Pages\ListChapters;
-use App\Filament\Mentor\Resources\ChapterResource\Pages\CreateChapter;
-use App\Filament\Mentor\Resources\ChapterResource\Pages\EditChapter;
 use App\Filament\Mentor\Resources\CourseResource\Pages;
+use App\Filament\Mentor\Resources\CourseResource\Pages\ListChapters;
 use App\Filament\Mentor\Resources\CourseResource\RelationManagers;
 use App\Models\Course;
 use Filament\Forms;
@@ -216,6 +214,7 @@ class CourseResource extends Resource
             'index' => Pages\ListCourses::route('/'),
             'create' => Pages\CreateCourse::route('/create'),
             'edit' => Pages\EditCourse::route('/{record}/edit'),
+            'chapter' => Pages\ListChapters::route('/{record}/chapter'),
         ];
     }
 }
