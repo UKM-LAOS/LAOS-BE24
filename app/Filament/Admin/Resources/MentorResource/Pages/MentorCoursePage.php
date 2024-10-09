@@ -58,6 +58,7 @@ class MentorCoursePage extends Page implements HasTable
                         'UI/UX' => 'UI/UX',
                         'Cyber Security' => 'Cyber Security',
                         'Digital Marketing' => 'Digital Marketing',
+                        'Multimedia' => 'Multimedia',
                     ])
                     ->label('Kategori'),
             ], layout: FiltersLayout::AboveContent);
