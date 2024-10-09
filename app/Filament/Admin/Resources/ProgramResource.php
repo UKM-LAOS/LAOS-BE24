@@ -20,6 +20,7 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -100,10 +101,12 @@ class ProgramResource extends Resource
                         ->required(),
                     SpatieMediaLibraryFileUpload::make('thumbnail')
                         ->required()
+                        ->image()
                         ->collection('program-thumbnail'),
                     SpatieMediaLibraryFileUpload::make('documentation')
                         ->collection('program-documentation')
                         ->multiple()
+                        ->image()
                         ->label('Dokumentasi (Multiple & Nullable)')
                         ->reorderable(),
                     TextInput::make('embedded_gform')
@@ -157,7 +160,7 @@ class ProgramResource extends Resource
                 SelectFilter::make('division_id')
                     ->label('Divisi')
                     ->relationship('division', 'name'),
-            ])
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

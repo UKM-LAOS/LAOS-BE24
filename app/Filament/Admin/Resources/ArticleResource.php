@@ -75,6 +75,7 @@ class ArticleResource extends Resource
                     SpatieMediaLibraryFileUpload::make('thumbnail')
                         ->label('Thumbnail')
                         ->collection('article-thumbnail')
+                        ->image()
                         ->required(),
                 ])
             ]);
@@ -121,7 +122,7 @@ class ArticleResource extends Resource
                 Filter::make('is_unggulan')
                     ->label('Unggulan')
                     ->query(fn(Builder $query) => $query->where('is_unggulan', true)),
-            ])
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
