@@ -28,6 +28,16 @@ class Course extends Model implements HasMedia
         return $this->hasMany(MyCourse::class);
     }
 
+    public function chapters()
+    {
+        return $this->hasMany(Chapter::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('course-thumbnail')
