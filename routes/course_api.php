@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Course\AuthController;
 use App\Http\Controllers\Api\Course\CourseController;
+use App\Http\Controllers\API\MyCourseController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('course')->group(function () {
@@ -20,5 +21,9 @@ Route::prefix('course')->group(function () {
         Route::post('/auth/refresh', [AuthController::class, 'refresh']);
         Route::get('/auth/profile', [AuthController::class, 'profile']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+        // My Course Route
+        Route::get('/my-courses', [MyCourseController::class, 'index']);
+        Route::get('/my-courses/{slug}', [MyCourseController::class, 'show']);
     });
 });
