@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Course\AuthController;
 use App\Http\Controllers\Api\Course\CourseController;
 use App\Http\Controllers\API\MyCourseController;
+use App\Http\Controllers\API\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('course')->group(function () {
@@ -25,5 +26,8 @@ Route::prefix('course')->group(function () {
         // My Course Route
         Route::get('/my-courses', [MyCourseController::class, 'index']);
         Route::get('/my-courses/{slug}', [MyCourseController::class, 'show']);
+
+        // Transaction Route
+        Route::get('/transactions', [TransactionController::class, 'index']);
     });
 });
