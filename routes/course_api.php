@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\API\Course\AuthController;
 use App\Http\Controllers\Api\Course\CourseController;
-use App\Http\Controllers\API\MyCourseController;
-use App\Http\Controllers\API\TransactionController;
+use App\Http\Controllers\API\Course\MyCourseController;
+use App\Http\Controllers\API\Course\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('course')->group(function () {

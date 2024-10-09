@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Course;
 
 use App\Http\Controllers\API\Compro\ResponseFormatter;
 use App\Http\Controllers\Controller;
