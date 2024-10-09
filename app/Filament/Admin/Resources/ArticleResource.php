@@ -75,6 +75,7 @@ class ArticleResource extends Resource
                     SpatieMediaLibraryFileUpload::make('thumbnail')
                         ->label('Thumbnail')
                         ->collection('article-thumbnail')
+                        ->image()
                         ->required(),
                 ])
             ]);

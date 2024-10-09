@@ -100,10 +100,12 @@ class ProgramResource extends Resource
                         ->required(),
                     SpatieMediaLibraryFileUpload::make('thumbnail')
                         ->required()
+                        ->image()
                         ->collection('program-thumbnail'),
                     SpatieMediaLibraryFileUpload::make('documentation')
                         ->collection('program-documentation')
                         ->multiple()
+                        ->image()
                         ->label('Dokumentasi (Multiple & Nullable)')
                         ->reorderable(),
                     TextInput::make('embedded_gform')

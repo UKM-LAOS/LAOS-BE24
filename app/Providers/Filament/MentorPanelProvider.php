@@ -2,13 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Admin\Resources\ArticleResource;
-use App\Filament\Admin\Resources\CourseStackResource;
-use App\Filament\Admin\Resources\DivisionResource;
-use App\Filament\Admin\Resources\MentorResource;
-use App\Filament\Admin\Resources\ProgramResource;
-use App\Filament\Admin\Resources\ReviewResource;
-use App\Filament\Admin\Resources\TransactionResource;
+use App\Filament\Mentor\Resources\CourseResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -35,25 +29,23 @@ use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 
-class AdminPanelProvider extends PanelProvider
+class MentorPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->sidebarCollapsibleOnDesktop()
-            ->id('admin')
-            ->path('admin')
+            ->id('mentor')
+            ->path('mentor')
             ->login()
             ->colors([
-                'primary' => Color::Green,
+                'primary' => Color::Cyan,
             ])
-            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
-            ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
+            ->discoverResources(in: app_path('Filament/Mentor/Resources'), for: 'App\\Filament\\Mentor\\Resources')
+            ->discoverPages(in: app_path('Filament/Mentor/Pages'), for: 'App\\Filament\\Mentor\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Mentor/Widgets'), for: 'App\\Filament\\Mentor\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
@@ -91,41 +83,18 @@ class AdminPanelProvider extends PanelProvider
                     ->url(fn(): string => EditProfilePage::getUrl())
                     ->icon('heroicon-m-user-circle')
             ])
-            // custom sidebar menu
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->groups([
                     NavigationGroup::make()
                         ->items([
                             ...Dashboard::getNavigationItems(),
                         ]),
-                    NavigationGroup::make('Company Profile')
-                        ->items([
-                            ...DivisionResource::getNavigationItems(),
-                            ...ArticleResource::getNavigationItems(),
-                            ...ProgramResource::getNavigationItems(),
-                        ]),
-                    NavigationGroup::make('Course')
-                        ->items([
-                            ...MentorResource::getNavigationItems(),
-                            ...CourseStackResource::getNavigationItems(),
-                            ...ReviewResource::getNavigationItems(),
-                            ...TransactionResource::getNavigationItems(),
-                        ]),
                     NavigationGroup::make('Web Course')
-                        ->items([]),
-                    NavigationGroup::make('Settings')
                         ->items([
-                            NavigationItem::make('Roles & Permissions')
-                                ->icon('heroicon-s-shield-check')
-                                ->url(fn() => route('filament.admin.resources.shield.roles.index')),
-                            NavigationItem::make('Environment Editor')
-                                ->icon('heroicon-s-cog')
-                                ->url(fn() => route('filament.admin.pages.env-editor')),
-                            NavigationItem::make('Logs')
-                                ->icon('heroicon-s-newspaper')
-                                ->url(fn() => route('filament.admin.pages.logs')),
+                            ...CourseResource::getNavigationItems(),
                         ]),
                 ]);
-            });
+            })
+            ->sidebarCollapsibleOnDesktop();
     }
 }

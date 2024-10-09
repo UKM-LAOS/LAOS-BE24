@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('price');
             $table->longText('description');
             $table->boolean('is_draft')->default(true);
+            $table->text('drive_resource');
             $table->timestamps();
         });
     }
