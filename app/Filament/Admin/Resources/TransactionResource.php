@@ -1,0 +1,130 @@
+<?php
+
+namespace App\Filament\Admin\Resources;
+
+use App\Filament\Admin\Resources\TransactionResource\Pages;
+use App\Filament\Admin\Resources\TransactionResource\RelationManagers;
+use App\Models\MyCourse;
+use App\Models\Transaction;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+
+class TransactionResource extends Resource
+{
+    protected static ?string $model = Transaction::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->can('view_any_transaction') && Auth::user()->can('view_transaction');
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                //
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->query(MyCourse::with('course', 'user', 'transaction'))
+            ->columns([
+                TextColumn::make('transaction.order_id')
+                    ->label('ID')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('course.title')
+                    ->label('Course')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('user.name')
+                    ->label('Pembeli')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('transaction.price')
+                    ->label('Harga')
+                    ->weight(FontWeight::Bold)
+                    ->money('IDR')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('transaction.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(function (Model $record) {
+                        if ($record->transaction == null) {
+                            return 'success';
+                        } else {
+                            match ($record->transaction->status) {
+                                'Pending' => 'warning',
+                                'Success' => 'success',
+                                'Failed' => 'danger',
+                            };
+                        }
+                    })
+                    ->getStateUsing(function (Model $record) {
+                        if ($record->transaction == null) {
+                            return 'Success';
+                        }
+                    })
+                    ->searchable(),
+            ])
+            ->filters([
+                SelectFilter::make('transaction.status')
+                    ->relationship('transaction', 'status')
+                    ->label('Status'),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListTransactions::route('/'),
+            'create' => Pages\CreateTransaction::route('/create'),
+            'edit' => Pages\EditTransaction::route('/{record}/edit'),
+        ];
+    }
+}

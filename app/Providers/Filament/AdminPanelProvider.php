@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\DivisionResource;
 use App\Filament\Admin\Resources\MentorResource;
 use App\Filament\Admin\Resources\ProgramResource;
 use App\Filament\Admin\Resources\ReviewResource;
+use App\Filament\Admin\Resources\TransactionResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -108,6 +109,7 @@ class AdminPanelProvider extends PanelProvider
                             ...MentorResource::getNavigationItems(),
                             ...CourseStackResource::getNavigationItems(),
                             ...ReviewResource::getNavigationItems(),
+                            ...TransactionResource::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Web Course')
                         ->items([]),
