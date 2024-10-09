@@ -39,6 +39,16 @@ class MentorCoursePage extends Page implements HasTable
                 TextColumn::make('title')
                     ->label('Judul')
                     ->searchable(),
+                TextColumn::make('jumlah_murid')
+                    ->label('Jumlah Murid')
+                    ->getStateUsing(fn(Model $record) => $record->myCourses->count())
+                    ->searchable(),
+                TextColumn::make('is_draft')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn(Model $record) => $record->is_draft ? 'gray' : 'green')
+                    ->getStateUsing(fn(Model $record) => $record->is_draft ? 'Draft' : 'Published')
+                    ->searchable(),
             ])
             ->filters([
                 SelectFilter::make('category')

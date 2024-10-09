@@ -20,4 +20,9 @@ class Course extends Model
     {
         return $this->belongsToMany(CourseStack::class);
     }
+
+    public function myCourses()
+    {
+        return $this->hasMany(MyCourse::class);
+    }
 }
