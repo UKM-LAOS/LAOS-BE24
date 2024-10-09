@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'mentor_id');
             $table->string('title');
             $table->string('slug');
-            $table->enum('category', ['Programming', 'Networking', 'UI/UX', 'Cyber Security', 'Digital Marketing']);
+            $table->enum('category', ['Programming', 'Networking', 'UI/UX', 'Cyber Security', 'Digital Marketing', 'Multimedia']);
             $table->enum('type', ['Free', 'Premium']);
             $table->enum('level', ['All Level', 'Beginner', 'Intermediate', 'Advance']);
             $table->unsignedBigInteger('price');
