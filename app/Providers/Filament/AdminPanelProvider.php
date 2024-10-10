@@ -2,6 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Resources\ArticleResource;
+use App\Filament\Admin\Resources\CourseStackResource;
+use App\Filament\Admin\Resources\DivisionResource;
+use App\Filament\Admin\Resources\MentorResource;
+use App\Filament\Admin\Resources\ProgramResource;
+use App\Filament\Admin\Resources\ReviewResource;
+use App\Filament\Admin\Resources\TransactionResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -34,11 +41,12 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->sidebarCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Green,
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
@@ -66,7 +74,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentEditProfilePlugin::make()
-                    ->shouldRegisterNavigation(false),
+                    ->shouldRegisterNavigation(false)
+                    ->shouldShowAvatarForm(
+                        value: true,
+                        directory: 'avatars', // image will be stored in 'storage/app/public/avatars
+                        rules: 'mimes:jpeg,png|max:1024' //only accept jpeg and png files with a maximum size of 1MB
+                    ),
                 FilamentLaravelLogPlugin::make(),
                 FilamentEnvEditorPlugin::make(),
                 FilamentShieldPlugin::make(),
@@ -86,7 +99,18 @@ class AdminPanelProvider extends PanelProvider
                             ...Dashboard::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Company Profile')
-                        ->items([]),
+                        ->items([
+                            ...DivisionResource::getNavigationItems(),
+                            ...ArticleResource::getNavigationItems(),
+                            ...ProgramResource::getNavigationItems(),
+                        ]),
+                    NavigationGroup::make('Course')
+                        ->items([
+                            ...MentorResource::getNavigationItems(),
+                            ...CourseStackResource::getNavigationItems(),
+                            ...ReviewResource::getNavigationItems(),
+                            ...TransactionResource::getNavigationItems(),
+                        ]),
                     NavigationGroup::make('Web Course')
                         ->items([]),
                     NavigationGroup::make('Settings')
