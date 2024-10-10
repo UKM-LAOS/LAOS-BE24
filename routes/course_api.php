@@ -20,6 +20,7 @@ Route::prefix('course')->group(function () {
 
     Route::middleware('auth.api')->group(function () {
         Route::post('/auth/refresh', [AuthController::class, 'refresh']);
+        Route::put('/auth/update-profile', [AuthController::class, 'updateProfile']);
         Route::get('/auth/profile', [AuthController::class, 'profile']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
 
