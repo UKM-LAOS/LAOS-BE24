@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Course\AuthController;
-use App\Http\Controllers\Api\Course\CourseController;
+use App\Http\Controllers\API\Course\CourseController;
 use App\Http\Controllers\API\Course\MyCourseController;
 use App\Http\Controllers\API\Course\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +16,7 @@ Route::prefix('course')->group(function () {
         Route::get('/', [CourseController::class, 'index']);
         Route::get('/search', [CourseController::class, 'search']);
         Route::get('/search/{slug}', [CourseController::class, 'show']);
+        Route::get('/categories', [CourseController::class, 'countByCategory']);
     });
 
     Route::middleware('auth.api')->group(function () {
