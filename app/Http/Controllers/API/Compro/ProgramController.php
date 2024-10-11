@@ -11,7 +11,7 @@ class ProgramController extends Controller
 {
     public function index()
     {
-        $programs = Program::with(['media'])->get(['id', 'program_title', 'activity_title']);
+        $programs = Program::with(['media'])->get(['id', 'program_title', 'activity_title', 'program_slug']);
         $programs->map(function ($program) {
             $program->thumbnail = $program->getFirstMediaUrl('program-thumbnail');
             unset($program->media);
