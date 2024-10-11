@@ -36,12 +36,12 @@ class CourseController extends Controller
             $course->whereType($type);
         }
 
-        return ResponseFormatter::success($course->paginate(6), 'Data kursus berhasil diambil');
+        return ResponseFormatter::success($course->orderByDesc('created_at')->paginate(6), 'Data kursus berhasil diambil');
     }
 
     public function show($slug)
     {
-        $course = Course::with(['mentor', 'courseStacks', 'chapters', 'reviews', 'reviews.user'])->where('slug', $slug)->first();
+        $course = Course::with(['mentor', 'courseStacks', 'courseStacks.media', 'chapters', 'reviews', 'reviews.user', 'myCourses', 'media', 'mentor'])->where('slug', $slug)->first();
 
         if (!$course) {
             return ResponseFormatter::error('Data kursus tidak ada', 404);

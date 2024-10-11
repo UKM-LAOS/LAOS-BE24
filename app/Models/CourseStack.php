@@ -18,4 +18,9 @@ class CourseStack extends Model implements HasMedia
         $this->addMediaCollection('course-stack')
             ->singleFile();
     }
+
+    public function course()
+    {
+        return $this->belongsToMany(Course::class)->withPivot('course_id', 'course_stack_id');
+    }
 }
